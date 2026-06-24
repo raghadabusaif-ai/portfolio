@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Raghad Abusaif</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&amp;family=DM+Mono:wght@300;400&amp;family=Barlow:wght@300;400&amp;display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#080807;--black2:#0f0e0d;--black3:#161513;
+  --off:#f0ede7;--dim:rgba(240,237,231,0.58);--dimmer:rgba(240,237,231,0.45);
+  --red:#A31515;--red2:#BF1C1C;
+  --mono:'DM Mono',monospace;--cond:'Barlow Condensed',sans-serif;--body:'Barlow',sans-serif;
+  --rule:rgba(240,237,231,0.07);
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--off);font-family:var(--body);font-weight:300;overflow-x:hidden;cursor:none}
+.cur{position:fixed;width:6px;height:6px;background:var(--red);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+.cur-r{position:fixed;width:28px;height:28px;border:1px solid rgba(163,21,21,0.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .14s ease}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;padding:0 32px;height:58px;background:var(--black);border-bottom:1px solid var(--rule)}
+.nav-logo{width:38px;height:38px;display:flex;align-items:center;justify-content:center;text-decoration:none;margin-right:20px;flex-shrink:0;overflow:hidden;transition:opacity .25s;cursor:none}
+.nav-logo:hover{opacity:.75}
+.nav-links{display:flex;gap:0;list-style:none}
+.nav-links li a{display:block;padding:0 24px;height:58px;line-height:58px;font-family:var(--mono);font-size:.67rem;font-weight:300;letter-spacing:.14em;color:var(--dim);text-decoration:none;text-transform:uppercase;transition:color .25s;position:relative}
+.nav-links li a::after{content:'';position:absolute;bottom:0;left:24px;right:24px;height:2px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+.nav-links li a:hover{color:var(--off)}
+.nav-links li a.active{color:var(--off);font-weight:400}
+.nav-links li a.active::after{transform:scaleX(1)}
+.nav-right{margin-left:auto;font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;color:var(--dimmer)}
+/* SCROLL TO TOP */
+.stt{position:fixed;bottom:32px;right:32px;z-index:500;width:38px;height:38px;border:1px solid rgba(240,237,231,0.15);background:var(--black);display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--dim);cursor:none;transition:all .3s;opacity:0;pointer-events:none}
+.stt.show{opacity:1;pointer-events:auto}
+.stt:hover{border-color:var(--red);color:var(--red)}
+.page{display:none!important;min-height:100vh;padding-top:58px}
+.page.active{display:block!important}
+
+/* HOME */
+#page-home.active{display:grid!important;grid-template-columns:1fr 1fr;height:100vh;padding-top:58px}
+.home-left{display:flex;flex-direction:column;justify-content:space-between;padding:50px 48px 42px;background:var(--black)}
+.home-label{font-family:var(--mono);font-size:.6rem;letter-spacing:.22em;color:var(--dimmer);text-transform:uppercase;margin-bottom:28px;display:flex;align-items:center;gap:12px}
+.home-label::before{content:'';width:24px;height:1px;background:var(--red)}
+.home-name{font-family:var(--cond);font-size:clamp(5.5rem,11vw,12rem);font-weight:800;line-height:.86;letter-spacing:-.01em;color:var(--off);text-transform:uppercase}
+.home-name .r{color:var(--red)}
+.home-projs{margin-top:36px}
+.hpi{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-top:1px solid var(--rule);cursor:none;transition:padding-left .28s}
+.hpi:last-child{border-bottom:1px solid var(--rule)}
+.hpi:hover{padding-left:8px}
+.hpi:hover .hpi-name{color:var(--off)}
+.hpi:hover .hpi-dot{background:var(--red);border-color:var(--red);transform:scale(1)}
+.hpi-name{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;color:var(--dim);transition:color .25s}
+.hpi-dot{width:5px;height:5px;border-radius:50%;background:transparent;border:1px solid var(--dimmer);transition:all .28s;transform:scale(.8)}
+.home-bottom{display:flex;align-items:center;justify-content:space-between}
+.home-email{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;color:var(--dimmer)}
+.home-cta{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;color:var(--off);background:var(--red);border:none;padding:10px 22px;cursor:none;transition:background .3s;text-decoration:none}
+.home-cta:hover{background:var(--red2)}
+.home-right{position:relative;overflow:hidden;background:var(--black3)}
+.home-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.home-ph svg{opacity:.07;width:100px}
+.home-ph-lbl{font-family:var(--mono);font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(240,237,231,0.18)}
+.home-bg-txt{position:absolute;bottom:28px;right:28px;font-family:var(--cond);font-size:2rem;font-weight:800;letter-spacing:.04em;color:rgba(240,237,231,0.05);text-transform:uppercase;line-height:1;text-align:right}
+
+/* ABOUT */
+#page-about{background:var(--black)}
+.about-hero{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--rule)}
+.ab-l{padding:58px 48px;border-right:1px solid var(--rule);display:flex;flex-direction:column;justify-content:flex-end}
+.ab-num{font-family:var(--mono);font-size:.58rem;letter-spacing:.2em;color:var(--red);text-transform:uppercase;margin-bottom:16px}
+.ab-title{font-family:var(--cond);font-size:clamp(3.5rem,6vw,7rem);font-weight:800;line-height:.88;text-transform:uppercase;color:var(--off)}
+.ab-title .r{color:var(--red)}
+.ab-r{padding:58px 48px;display:flex;flex-direction:column;justify-content:flex-end}
+.ab-intro{font-size:.9rem;line-height:1.88;color:var(--dim);margin-bottom:14px}
+.ab-intro strong{color:var(--off);font-weight:400}
+.about-body{display:grid;grid-template-columns:1.1fr 0.9fr}
+.ab-col{padding:44px 48px}
+.ab-col:first-child{border-right:1px solid var(--rule)}
+.csl{font-family:var(--mono);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+.cv-item{margin-bottom:22px}
+.cv-name{font-family:var(--cond);font-size:1.18rem;font-weight:600;letter-spacing:.02em;color:var(--off);text-transform:uppercase}
+.cv-sub{font-size:.82rem;color:var(--dim);margin-top:3px}
+.cv-date{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(--red);margin-top:4px}
+.cv-note{font-size:.8rem;color:var(--dim);margin-top:6px;line-height:1.7}
+.sw{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.sk{font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;padding:4px 10px;border:1px solid rgba(240,237,231,0.12);color:var(--dim);text-transform:uppercase;transition:border-color .3s,color .3s;cursor:none}
+.sk:hover{border-color:var(--red);color:var(--off)}
+.cv-dl{display:inline-flex;align-items:center;gap:10px;margin-top:26px;font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--off);border:1px solid rgba(240,237,231,0.2);padding:10px 22px;background:none;cursor:none;transition:all .3s;text-decoration:none}
+.cv-dl:hover{background:var(--red);border-color:var(--red)}
+.lang-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--rule)}
+.lang-n{font-family:var(--cond);font-size:1.08rem;font-weight:600;text-transform:uppercase;color:var(--off)}
+.lang-l{font-family:var(--mono);font-size:.58rem;letter-spacing:.12em;color:var(--red)}
+
+/* PORTFOLIO */
+#page-portfolio{background:var(--black)}
+.port-hero{padding:58px 48px 48px;border-bottom:1px solid var(--rule);display:flex;align-items:flex-end;justify-content:space-between}
+.port-title{font-family:var(--cond);font-size:clamp(4rem,7vw,8.5rem);font-weight:800;line-height:.88;text-transform:uppercase}
+.port-title .r{color:var(--red)}
+.port-meta{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;color:var(--dimmer)}
+.pj{display:grid;grid-template-columns:70px 1fr 200px 56px;align-items:center;padding:26px 48px;border-bottom:1px solid var(--rule);cursor:none;transition:background .35s;position:relative;overflow:hidden}
+.pj::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--red);transform:scaleY(0);transform-origin:bottom;transition:transform .35s ease}
+.pj:hover{background:rgba(240,237,231,0.025)}
+.pj:hover::before{transform:scaleY(1)}
+.pj:hover .pj-name{color:var(--off)}
+.pj:hover .pj-arrow{transform:translateX(6px);color:var(--red)}
+.pj-num{font-family:var(--mono);font-size:.63rem;letter-spacing:.12em;color:var(--red)}
+.pj-name{font-family:var(--cond);font-size:clamp(1.8rem,3.5vw,3.2rem);font-weight:700;text-transform:uppercase;letter-spacing:.01em;color:rgba(240,237,231,0.72);transition:color .3s;line-height:1}
+.pj-cat{font-family:var(--mono);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dimmer);text-align:right}
+.pj-arrow{font-size:1.2rem;color:var(--dimmer);text-align:right;transition:transform .3s,color .3s}
+
+/* PROJECT PAGE */
+.proj-page{background:var(--black)}
+.pp-header{padding:48px 48px 42px;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end}
+.pp-back{font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dimmer);background:none;border:none;cursor:none;transition:color .3s;display:flex;align-items:center;gap:8px;margin-bottom:28px}
+.pp-back:hover{color:var(--red)}
+.pp-cat{font-family:var(--mono);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:10px}
+.pp-title{font-family:var(--cond);font-size:clamp(3.5rem,6.5vw,7.5rem);font-weight:800;text-transform:uppercase;line-height:.88;color:var(--off)}
+.pp-title .r{color:var(--red)}
+.pp-mrow{display:flex;gap:0;margin-top:28px;padding-top:22px;border-top:1px solid var(--rule)}
+.pp-mi{flex:1;padding-left:0}
+.pp-mi+.pp-mi{padding-left:18px;border-left:1px solid var(--rule);margin-left:18px}
+.meta-l{font-family:var(--mono);font-size:.54rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dimmer)}
+.meta-v{font-family:var(--cond);font-size:1rem;font-weight:600;text-transform:uppercase;color:var(--off);margin-top:4px}
+.pp-desc{font-size:.9rem;line-height:1.88;color:var(--dim);padding-top:20px;border-top:1px solid var(--rule)}
+.pp-desc+.pp-desc{margin-top:12px}
+.pp-body{padding:0 48px 56px}
+.main-img{width:100%;height:480px;background:var(--black3);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.main-img img{width:100%;height:auto;display:block;filter:brightness(.88)}
+.il{font-family:var(--mono);font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dimmer)}
+.pp-content{display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid var(--rule)}
+.pp-col{padding:42px 0}
+.pp-col:first-child{padding-right:48px;border-right:1px solid var(--rule)}
+.pp-col:last-child{padding-left:48px}
+.psec{font-family:var(--mono);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:14px}
+.pt{font-size:.88rem;line-height:1.9;color:var(--dim)}
+.pt+.pt{margin-top:12px}
+.tw{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);margin:0 -48px}
+.gi{height:230px;background:var(--black3);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;transition:filter .4s}
+.gi:hover{filter:brightness(1.1)}
+.gi img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.8)}
+.pnav{display:flex;justify-content:space-between;align-items:center;padding:26px 0;border-top:1px solid var(--rule)}
+.pnav-btn{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dimmer);background:none;border:none;cursor:none;transition:color .3s}
+.pnav-btn:hover{color:var(--red)}
+
+@media(max-width:900px){
+  nav{padding:0 20px}
+  .nav-links li a{padding:0 14px}
+  #page-home{grid-template-columns:1fr}
+  .home-right{display:none}
+  .home-left{padding:38px 24px 34px}
+  .about-hero,.about-body{grid-template-columns:1fr}
+  .ab-l{border-right:none;border-bottom:1px solid var(--rule);padding:44px 24px}
+  .ab-r,.ab-col{padding:34px 24px}
+  .ab-col:first-child{border-right:none;border-bottom:1px solid var(--rule)}
+  .port-hero{padding:44px 24px 34px;flex-direction:column;gap:12px;align-items:flex-start}
+  .pj{grid-template-columns:48px 1fr 38px;padding:18px 24px}
+  .pj-cat{display:none}
+  .pp-header{grid-template-columns:1fr;padding:38px 24px 30px}
+  .pp-body{padding:0 24px 44px}
+  .pp-content{grid-template-columns:1fr}
+  .pp-col:first-child{border-right:none;border-bottom:1px solid var(--rule);padding-right:0}
+  .pp-col:last-child{padding-left:0}
+  .gallery{grid-template-columns:1fr 1fr;margin:0 -24px}
+}
+
+.skill-logos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:6px}
+.skill-logo-item{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 10px;border:1px solid rgba(240,237,231,0.08);transition:border-color .3s,background .3s;cursor:default}
+.skill-logo-item:hover{border-color:rgba(163,21,21,0.4);background:rgba(163,21,21,0.04)}
+.skill-logo-img{width:60px;height:60px;display:flex;align-items:center;justify-content:center}
+.skill-logo-img img{width:100%;height:100%;object-fit:contain}
+.skill-logo-name{font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);text-align:center;line-height:1.3}
+
+/* HORIZONTAL SCROLL GALLERY */
+.h-gallery-wrap{position:relative;margin:0 -48px;overflow:hidden;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.h-gallery{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none;cursor:grab;user-select:none}
+.h-gallery::-webkit-scrollbar{display:none}
+.h-gallery.dragging{cursor:grabbing}
+.h-gallery-item{flex:0 0 auto;width:calc(560px * 1.414);height:560px;scroll-snap-align:start;position:relative;overflow:hidden;background:var(--black3);border-right:1px solid var(--rule);cursor:pointer}
+.h-gallery-item:first-child{border-left:none}
+.h-gallery-item img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:filter .4s;background:#1a1917}
+.h-gallery-item:hover img{filter:brightness(1)}
+.h-gallery-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dimmer)}
+.h-gallery-counter{position:absolute;bottom:20px;right:28px;font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;color:rgba(240,237,231,0.35)}
+.h-gallery-nav{position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);z-index:10;display:flex;justify-content:space-between;padding:0 16px}
+.h-gallery-btn{width:36px;height:36px;border:1px solid rgba(240,237,231,0.2);background:rgba(8,8,7,0.7);display:flex;align-items:center;justify-content:center;font-size:.9rem;color:var(--dim);cursor:none;transition:all .3s;backdrop-filter:blur(4px)}
+.h-gallery-btn:hover{border-color:var(--red);color:var(--off);background:rgba(163,21,21,0.3)}
+.h-gallery-dots{display:flex;justify-content:center;gap:8px;padding:16px 0;background:var(--black)}
+.h-dot{width:5px;height:5px;border-radius:50%;background:var(--dimmer);transition:all .3s;cursor:none}
+.h-dot.active{background:var(--red);width:18px;border-radius:3px}
+
+/* HORIZONTAL SCROLL GALLERY */
+.h-gallery{
+  display:flex;
+  overflow-x:auto;
+  overflow-y:hidden;
+  gap:12px;
+  padding:40px 48px;
+  margin:0 -48px;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  cursor:grab;
+}
+.h-gallery::-webkit-scrollbar{display:none}
+.h-gallery.grabbing{cursor:grabbing}
+.h-gallery-item{
+  flex:0 0 auto;
+  width:680px;
+  height:420px;
+  background:var(--black3);
+  scroll-snap-align:start;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+  border:1px solid var(--rule);
+  transition:border-color .3s;
+}
+.h-gallery-item:hover{border-color:rgba(163,21,21,0.3)}
+.h-gallery-item img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:filter .4s;background:#1a1917}
+.h-gallery-item:hover img{filter:brightness(1)}
+.h-gallery-item .il{font-family:var(--mono);font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dimmer)}
+.h-gallery-count{
+  padding:0 48px 12px;
+  font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;
+  color:var(--dimmer);
+}
+.h-gallery-hint{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;
+  color:var(--dimmer);padding:0 48px 32px;
+}
+.h-gallery-hint::before{content:'← →';letter-spacing:.05em}
+
+#lightbox button{cursor:none}
+#lightbox img{cursor:zoom-in}
+
+
+
+.eb-hint{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.1em;color:var(--dimmer);text-align:right;display:none}
+
+
+
+body.eb-on{cursor:auto!important}
+body.eb-on *{cursor:auto!important}
+.eb-editable{outline:none;transition:outline .15s}
+body.eb-on .eb-editable{outline:1px dashed rgba(163,21,21,0.4);cursor:text!important}
+body.eb-on .eb-editable:hover{outline:1px solid var(--red);background:rgba(163,21,21,0.04)}
+body.eb-on .eb-editable:focus{outline:2px solid var(--red);background:rgba(163,21,21,0.07)}
+.eb-imgwrap{position:relative}
+body.eb-on .eb-imgwrap:hover::after{content:'Click to replace image';position:absolute;inset:0;background:rgba(163,21,21,0.55);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.65rem;letter-spacing:.1em;color:white;pointer-events:none;z-index:50}
+.eb-bar{position:fixed;bottom:90px;right:32px;z-index:9000;display:none;flex-direction:column;gap:8px;align-items:flex-end}
+body.eb-on .eb-bar{display:flex}
+.eb-bar button{font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;padding:9px 18px;border:none;cursor:pointer}
+.eb-dl{background:var(--off);color:var(--black)}
+.eb-dl:hover{background:rgba(240,237,231,.85)}
+.eb-hint{font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;color:rgba(240,237,231,.35);text-align:right}
+
+.pp-section-label{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:800;letter-spacing:.05em;color:#A31515;text-transform:uppercase;padding:40px 0 16px;border-top:1px solid var(--rule);margin-top:8px}</style>
+</head>
+<body class="">
+<div class="cur" id="cur" style="left: 1314px; top: 593px;"></div>
+<div class="cur-r" id="curR" style="left: 1312.64px; top: 592.459px;"></div>
+
+<nav>
+  <a href="#" class="nav-logo" onclick="goPage('home');return false"><img data-ph="0" src="" style="width:100%;height:100%;object-fit:cover;border-radius:0" alt="R"></a>
+  <ul class="nav-links">
+    <li><a href="#" id="nav-home" class="" onclick="goPage('home');return false">Home</a></li>
+    <li><a href="#" id="nav-about" onclick="goPage('about');return false" class="">About</a></li>
+    <li><a href="#" id="nav-portfolio" onclick="goPage('portfolio');return false" class="active">Portfolio</a></li>
+  </ul>
+  <div class="nav-right">Raghad Abusaif</div><button id="eb" onclick="ebToggle()" style="margin-left: 20px; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 6px 16px; background: rgba(163, 21, 21, 0.15); border-width: 1px; border-style: solid; border-color: var(--red); border-image: initial; color: var(--off); cursor: pointer; transition: 0.25s;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--off)'" onmouseout="if(!window.ebOn){this.style.borderColor='rgba(240,237,231,0.2)';this.style.color='var(--dimmer)'}">✓ Done</button>
+</nav>
+<button class="stt" id="stt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- HOME -->
+<div class="page" id="page-home">
+  <div class="home-left">
+    <div>
+      <div class="home-label">Architectural Engineer · Zarqa, Jordan</div>
+      <h1 class="home-name">RAGHAD<br><span class="r">ABUSAIF</span></h1>
+      <p style="margin-top:32px;font-size:.88rem;line-height:1.85;color:var(--dim);max-width:420px">Designing spaces where structure meets human experience — from student centers to cultural corridors, grounded in context and driven by concept.</p>
+    </div>
+    <div class="home-bottom">
+      <a href="mailto:raghadabusaif12@gmail.com" style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;color:var(--dimmer);text-decoration:none;transition:color .3s" onmouseover="this.style.color='var(--off)'" onmouseout="this.style.color='var(--dimmer)'">raghadabusaif12@gmail.com</a>
+    </div>
+  </div>
+  <div class="home-right">
+    <div class="home-ph">
+      <svg viewBox="0 0 100 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="8" y="105" width="84" height="2.5" fill="#f0ede7"></rect>
+        <rect x="24" y="35" width="52" height="70" fill="none" stroke="#f0ede7" stroke-width="1.8"></rect>
+        <path d="M24 35 L50 8 L76 35" fill="none" stroke="#f0ede7" stroke-width="1.8"></path>
+        <rect x="40" y="72" width="20" height="33" fill="none" stroke="#f0ede7" stroke-width="1.4"></rect>
+        <rect x="30" y="46" width="14" height="14" fill="none" stroke="#f0ede7" stroke-width="1"></rect>
+        <rect x="56" y="46" width="14" height="14" fill="none" stroke="#f0ede7" stroke-width="1"></rect>
+      </svg>
+      <span class="home-ph-lbl">Add your project image here</span>
+    </div>
+    <div class="home-bg-txt">ARCH<br>ITECTURAL<br>ENGINEER</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="page-about">
+  <div style="padding:40px 48px 32px;border-bottom:1px solid var(--rule)">
+    <div style="font-family:var(--mono);font-size:.58rem;letter-spacing:.2em;color:var(--red);text-transform:uppercase;margin-bottom:12px">— Profile</div>
+    <p style="font-size:.9rem;line-height:1.85;color:var(--dim);max-width:680px">Architect with an interest in <strong style="color:var(--off);font-weight:400">human-centered design</strong>. I aim to create functional and thoughtful spaces that support well-being and connect people with their environment. I approach projects with creativity, attention to detail, and a focus on practical design solutions.</p>
+  </div>
+  <div class="about-body">
+    <div class="ab-col">
+
+      <div class="csl">Education</div>
+      <div class="cv-item">
+        <div class="cv-name">Bachelor of Architecture Engineering</div>
+        <div class="cv-sub">Zarqa University</div>
+        <div class="cv-date">2022 — 2025</div>
+        <div class="cv-note eb-editable" contenteditable="false">84.3% · Excellent grade · Top of class</div>
+      </div>
+      <div class="cv-item">
+        <div class="cv-name">Diploma of Architecture Engineering</div>
+        <div class="cv-sub">Faculty of Engineering Technology</div>
+        <div class="cv-date">2019 — 2022</div>
+        <div class="cv-note eb-editable" contenteditable="false">88.9% · Graduated at the top of class</div>
+      </div>
+
+      <div class="csl" style="margin-top:34px">Experience</div>
+
+      <div class="cv-item">
+        <div class="cv-name">Technical Engineer — Remote</div>
+        <div class="cv-sub">Petra Point For Survey Services · UAE, Dubai</div>
+        <div class="cv-date">2025 · 8 months</div>
+        <div class="cv-note eb-editable" contenteditable="false">Survey submission files per DLD, ADM, DDA &amp; RAC requirements · Technical drawings review &amp; regulatory compliance · 2D marketing plans for real estate presentations.</div>
+      </div>
+      <div class="cv-item">
+        <div class="cv-name">Projects Designer &amp; Engineer</div>
+        <div class="cv-sub">Al-Rewaq Contracting Company · Amman, Arjan</div>
+        <div class="cv-date">2024 · 12 months</div>
+        <div class="cv-note eb-editable" contenteditable="false">Architectural drafts · Preliminary project studies · Client communication · 3D models for visualization · Contract documents.</div>
+      </div>
+      <div class="cv-item">
+        <div class="cv-name">Graphic Designer</div>
+        <div class="cv-sub">Ghost Media Company · Amman, Arjan</div>
+        <div class="cv-date">2024 · 10 months</div>
+        <div class="cv-note eb-editable" contenteditable="false">Social media posts and visual content for different platforms · Account management and post scheduling.</div>
+      </div>
+      <div class="cv-item">
+        <div class="cv-name">Trainee Architect</div>
+        <div class="cv-sub">Eng. Hassan Abu Awad's Office · Zarqa</div>
+        <div class="cv-date">2021 · 2 months</div>
+        <div class="cv-note eb-editable" contenteditable="false">Architectural drafts and contract documents.</div>
+      </div>
+
+      <a href="Raghad_abusaif_-_Architect_.pdf" target="_blank" class="cv-dl">↓ &nbsp;Download Full CV</a>
+    </div>
+
+    <div class="ab-col">
+      <div class="csl">Technical Skills</div>
+      <div class="skill-logos-grid">
+      <div class="skill-logo-item"><div class="skill-logo-img"><img data-ph="1" src="" alt="AutoCAD 2D–3D"></div><span class="skill-logo-name">AutoCAD 2D–3D</span></div>
+      <div class="skill-logo-item"><div class="skill-logo-img"><img data-ph="2" src="" alt="Revit"></div><span class="skill-logo-name">Revit</span></div>
+      <div class="skill-logo-item"><div class="skill-logo-img"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PiA8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDIwMDEwOTA0Ly9FTiIgImh0dHA6Ly93d3cudzMub3JnL1RSLzIwMDEvUkVDLVNWRy0yMDAxMDkwNC9EVEQvc3ZnMTAuZHRkIj4gPHN2ZyB2ZXJzaW9uPSIxLjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjI1OS4wMDAwMDBwdCIgaGVpZ2h0PSIxOTQuMDAwMDAwcHQiIHZpZXdCb3g9IjAgMCAyNTkuMDAwMDAwIDE5NC4wMDAwMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiPiA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLjAwMDAwMCwxOTQuMDAwMDAwKSBzY2FsZSgwLjEwMDAwMCwtMC4xMDAwMDApIiBmaWxsPSIjMDFhYmZkIiBzdHJva2U9Im5vbmUiPiA8cGF0aCBkPSJNNjMyIDE3MzkgYy02NSAtMzIgLTk5IC02NiAtMTM1IC0xMzMgLTIyIC00MSAtMjIgLTQyIC0yMiAtNjM2IGwwIC01OTUgMzAgLTU0IGMzMyAtNjAgOTAgLTExMCAxNTMgLTEzNCAzOCAtMTUgMTA3IC0xNyA2MzYgLTE3IDY1NiAwIDY0MSAtMSA3MjAgNjQgMjMgMTkgNTUgNTggNzEgODcgbDMwIDU0IDAgNTk1IGMwIDU5NCAwIDU5NSAtMjIgNjM2IC0zNiA2NyAtNzAgMTAxIC0xMzUgMTMzIGwtNjEgMzEgLTYwMiAwIC02MDIgMCAtNjEgLTMxeiBtMTIzOCAtMTIgYzI1IC03IDUxIC0xMiA1OCAtOSA2IDIgMTIgLTEgMTIgLTggMCAtNiA0IC05IDggLTYgMTEgNiA2NSAtNDggNTYgLTU2IC0zIC0zIDAgLTkgNyAtMTQgOCAtNSAxMCAtMyA0IDcgLTggMTIgLTYgMTIgOCAxIDkgLTggMjUgLTMzIDM3IC01NyAyMCAtNDIgMjEgLTU1IDIwIC02MTAgMCAtNDE1IC0zIC01NzggLTEyIC02MDcgLTExIC0zOCAtOTggLTE0MiAtOTggLTExNyAwIDUgLTUgNyAtMTAgNCAtNiAtNCAtOCAtMTAgLTUgLTE1IDYgLTkgLTE3IC0xOSAtNjUgLTI4IC00NSAtOCAtMTEyMCAtOCAtMTE4MiAwIC00NiA2IC04NCAyOSAtNzAgNDIgMyA0IC0xIDQgLTkgMSAtMTggLTcgLTk3IDYwIC04NiA3MiA0IDMgNyAwIDcgLTcgMCAtNyAzIC0xMCA3IC03IDMgNCAtNCAxOCAtMTcgMzIgLTEzIDE0IC0yNSAzNSAtMjYgNDggLTEgMTIgLTQgMjcwIC01IDU3MiAtMyA1MDggLTIgNTU0IDE1IDYwMCAyMCA1NiA1NiAxMTUgNzAgMTE1IDUgMCAxNyA3IDI2IDE1IDQ1IDQxIDcyIDQzIDY1MCA0NCA0NDIgMSA1NjQgLTEgNjAwIC0xMnoiLz4gPHBhdGggZD0iTTg2MiAxMzkzIGMtMTMgLTIgLTIxIC0xMCAtMTkgLTE2IDMgLTkgNDggLTEyIDE1MyAtMTIgOTIgMCAxNjUgLTUgMTkxIC0xMyA2MCAtMTggMTIzIC02OSAxNDkgLTEyMiAzNyAtNzIgMzAgLTIwMiAtMTMgLTI1MiAtMTYgLTE4IC05IC00MyA5IC0zMiA3IDUgOCAyIDMgLTUgLTUgLTkgLTEwIC0xMCAtMTggLTIgLTcgNyAtMjAgMiAtNDIgLTE0IC00OSAtMzggLTExMyAtNTYgLTIwMiAtNTggbC04MyAtMiAwIC0xMTUgMCAtMTE1IC03NSAwIC03NSAwIDAgMzY3IGMwIDMyOSAtNiA0MjUgLTIzIDM1NSAtMyAtMTIgLTcgLTE3MCAtOCAtMzUyIC0yIC0zNDIgMSAtMzc0IDQwIC0zOTQgNDQgLTI0IDE2OCAtNCAxNTcgMjYgLTMgOCAtMiAxMiAzIDggMTQgLTggMjMgNDkgMTYgOTkgLTExIDcyIC00IDgyIDY4IDkxIDkzIDEwIDExNyAxNiAxMTAgMjggLTMgNiAtMSA3IDUgMyA2IC00IDE5IC0yIDI5IDMgMTAgNSAyNiAxMiAzNiAxNSAxMCAzIDE2IDEwIDEyIDE1IC0zIDUgMCAxMyA2IDE3IDggNCA5IDMgNSAtNCAtNCAtNyAtMiAtMTIgMyAtMTIgNiAwIDExIDUgMTEgMTEgMCA2IDYgOSAxMyA2IDEwIC00IDE5IDEyIDMxIDQ5IDkgMzAgMjEgNTIgMjcgNDkgOSAtNiAxMyA0MiA5IDExNSAtMiA1MyAtMTggMTA0IC00MCAxMzIgLTExIDE0IC0xNiAyOCAtMTIgMzIgMyA0IC0yIDQgLTEyIDAgLTEyIC01IC0xNyAtNCAtMTMgMyA4IDEyIC0yNiA0NiAtMzYgMzYgLTQgLTMgLTcgMSAtNyAxMCAwIDEwIC04IDE3IC0yMCAxNyAtMTEgMCAtMjAgNCAtMjAgMTAgMCA1IC03IDcgLTE1IDQgLTggLTQgLTIyIDAgLTMxIDcgLTE2IDEzIC0yNzMgMjMgLTMyMiAxMnoiLz4gPHBhdGggZD0iTTk5MCAxMTE0IGwwIC0xMTYgNzMgMyBjODkgNSAxMzMgMzEgMTQzIDg1IDE3IDkwIC00MSAxNDQgLTE1MyAxNDQgbC02MyAwIDAgLTExNnogbTEzMyA3MSBjNDAgLTE3IDQ5IC0zNSA0NSAtOTQgLTMgLTM2IC02IC00MCAtMjUgLTM2IC0xMyAyIC0yNiAtMSAtMjkgLTcgLTQgLTYgLTIgLTggNCAtNCA2IDMgMTMgMiAxNiAtMyA0IC02IC0xMSAtOCAtMzYgLTYgLTMwIDMgLTM5IDIgLTI4IC01IDkgLTYgMTAgLTEwIDMgLTEwIC0yMSAwIC00MyAxMiAtMzcgMjEgMyA1IDAgOSAtNiA5IC03IDAgLTEwIDIzIC04IDY3IDMgNjIgNSA2OCAyOCA3NCAzNiAxMCAzNCAxMCA3MyAtNnoiLz4gPHBhdGggZD0iTTE2MDkgMTIyNiBjLTQgLTQgLTE5IC04IC0zNSAtMTAgLTE2IC0zIC00MCAtOSAtNTQgLTE1IC0yOSAtMTEgLTg5IC01MSAtNzggLTUxIDQgMCAtNCAtMjIgLTE4IC01MCAtMjggLTU2IC0yNiAtOTIgOCAtMTY4IDEzIC0zMCAyOCAtNDcgNDkgLTU0IDE2IC01IDI5IC0xNCAyOSAtMTkgMCAtNSA2IC05IDE0IC05IDcgMCAxOSAtNyAyNiAtMTUgNyAtOCAyMyAtMTUgMzUgLTE1IDE5IDAgNDMgLTI2IDMzIC0zNSAtMiAtMiAtMjggMSAtNTggNiAtMzAgNiAtNjggMTIgLTg0IDE0IC0xNiAyIC0zMSA2IC0zMyA5IC0zIDIgLTEzIC0zIC0yNCAtMTIgLTE1IC0xMyAtMTkgLTMwIC0xOSAtNzMgMCAtODMgMjYgLTExMiAxMTcgLTEyNyA3MSAtMTIgMTg0IC0xMSAyMTggMyAyOCAxMiA4MSA1NiA3OCA2NiAtMiA1IDQgNiAxMyAyIDEwIC00IDE1IC0xIDEzIDggLTIgOCA1IDI5IDE1IDQ3IDIxIDQwIDE0IDEzMyAtMTMgMTU5IC05IDkgLTE2IDI0IC0xNiAzMiAwIDEwIC04IDE1IC0xOCAxMyAtOSAtMiAtMTcgMyAtMTcgMTEgMCA4IC0xOCAxOSAtNDAgMjYgLTIyIDcgLTM4IDE2IC0zNSAyMSA0IDYgLTIgMTAgLTEyIDEwIC0xOSAxIC01MyAyMiAtNTMgMzQgMCAzIDE4IDYgNDAgNiAyNyAwIDM5IC00IDM4IC0xMiAtMyAtMTQgNDEgLTIwIDgwIC0xMSAxNyA0IDIyIDExIDE5IDI0IC0zIDExIC0yIDE3IDMgMTQgNCAtMyA4IDI4IDcgNjkgLTEgNTIgLTUgNzIgLTEzIDY5IC02IC0yIC0xNCA0IC0xOCAxNCAtNiAxNSAtOCAxNSAtMTYgMyAtNiAtOCAtMTAgLTEwIC0xMCAtNCAwIDYgLTYgMTEgLTEyIDEyIC03IDAgLTQ0IDQgLTgzIDcgLTM4IDQgLTczIDQgLTc2IDF6IG0xNzcgLTQ2IGMyMiAtOSAyNCAtMTUgMjQgLTc5IGwwIC02OSAtNTUgMTkgYy05NyAzNCAtMTg5IDIwIC0xNzIgLTI2IDQgLTggNDggLTM0IDk5IC01OCA1NyAtMjcgMTA0IC01NiAxMjAgLTc1IDc1IC04OSAzMCAtMjExIC05NSAtMjU3IC01NiAtMjEgLTE3OSAtMTcgLTI0MCA4IGwtMzcgMTYgMCA3MCAwIDcwIDQ1IC0yMCBjNjUgLTI5IDE3NiAtMzcgMTk4IC0xNSAyNyAyNyA2IDQ5IC03NCA4MSAtMTI2IDQ5IC0xODMgMTI4IC0xNTggMjE4IDE3IDY0IDY3IDEwOCAxNDQgMTI4IDM1IDEwIDE2NiAyIDIwMSAtMTF6Ii8+IDwvZz4gPC9zdmc+" alt="Photoshop"></div><span class="skill-logo-name">Photoshop</span></div>
+      <div class="skill-logo-item"><div class="skill-logo-img"><img data-ph="3" src="" alt="Lumion"></div><span class="skill-logo-name">Lumion</span></div>
+      <div class="skill-logo-item"><div class="skill-logo-img" style="width:84px;height:84px"><img data-ph="4" src="" alt="Twinmotion"></div><span class="skill-logo-name">Twinmotion</span></div>
+      <div class="skill-logo-item"><div class="skill-logo-img"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMCIgd2lkdGg9IjIyMCIgaGVpZ2h0PSIyMjAiIHZpZXdCb3g9IjAgMCAyMjAgMjIwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBtZWV0Ij48cmVjdCBpZD0ic3ZnX2JvcmRlcl9yZWN0IiB4PSIxLjUiIHk9IjEuNSIgd2lkdGg9IjIxNyIgaGVpZ2h0PSIyMTciIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIzIi8+PGcgaWQ9InN2Z19ib3JkZXJfZ3JvdXAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwLDEwKSI+PGcgeG1sbnM6ZGVmYXVsdD0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLDIwMC4wMDAwMDApIHNjYWxlKDAuMTAwMDAwLC0wLjEwMDAwMCkiIGZpbGw9IiNmZmZmZmYiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI4Ij48cGF0aCBkPSJNMTI4NyAxNTk0IGMtMyAtNCAtMTc5IC02IC0zOTAgLTUgbC0zODUgMiAtMjUgLTIzIC0yNiAtMjMgLTIgLTMyNSBjLTEgLTE3OSAtMSAtNDE2IDAgLTUyNyBsMSAtMjAzIDI3IC0xNyBjMjEgLTE0IDQ0IC0xNyAxMTcgLTE1IDEzNCA0IDEzNCA0IDEzOCAyMDYgMyAxNDMgNSAxNTkgMjEgMTYyIDkgMSAxNyAtMSAxNyAtNSAwIC00IDIzIC0yMCA1MCAtMzYgMjggLTE2IDUwIC0zMyA1MCAtMzcgMCAtNCA3IC04IDE1IC04IDggMCAxNSAtNSAxNSAtMTIgMCAtNiAzIC05IDYgLTUgNiA2IDE3IC0xIDU0IC0zNSAxMyAtMTIgMjAgLTEzIDI0IC01IDMgNyA1IDYgNSAtMyAxIC0xOSAzOCAtNDMgNTMgLTM0IDcgNCA4IDMgNCAtNCAtNCAtNyAtMSAtMTIgNyAtMTIgOCAwIDI1IC0xMCAzOSAtMjIgMzIgLTMwIDEzNSAtOTggMTQ4IC05OCA1IDAgMTAgLTQgMTAgLTggMCAtNCAxMyAtMTUgMjkgLTI1IDIzIC0xMyA1MyAtMTcgMTQwIC0xNyBsMTExIDAgMTkgMzEgYzExIDE4IDE4IDQwIDE2IDUxIC0zIDExIC01IDEwMSAtNSAyMDEgLTIgMTU2IC00IDE4MyAtMTggMTk0IC0xMCA3IC0yMiAxMyAtMjkgMTMgLTYgMCAtMjQgNSAtNDAgMTEgLTI0IDkgLTI2IDEyIC0xMiAyMiAyMiAxNyA2MiA4NCA4MyAxNDAgMjEgNTYgMjQgMTcwIDYgMTkyIC02IDggLTEwIDIwIC04IDI3IDMgNyAtNiAzMCAtMTkgNTEgLTEzIDIwIC0yMSAzNyAtMTkgMzcgMyAwIC05IDE1IC0yNyAzNCAtMzcgMzkgLTE0MyAxMTQgLTEzMiA5NCAzIC03IC0xIC00IC0xMCA3IC05IDExIC0xOCAxOSAtMjAgMTggLTEzIC03IC0zNSAtMiAtMzAgNyA3IDExIDIgMTMgLTggNHogbTQwIC02NSBjNzYgLTI4IDE2MiAtMTE0IDE4NiAtMTg0IDE5IC01NSAyMiAtMTUxIDcgLTIwNyAtMTUgLTUyIC02OCAtMTI2IC0xMTcgLTE2MSAtMjMgLTE2IC03MCAtMzcgLTEwNSAtNDcgbC02MyAtMTcgMTUwIDUgMTUwIDUgLTIgLTIxMyAtMiAtMjE0IC0xMDcgMyAtMTA4IDMgLTE1MyAxMDQgYy04NCA1NyAtMjIzIDE1MiAtMzA5IDIxMCBsLTE1NSAxMDYgMiAtMjEyIDEgLTIxMiAtMTAxIDAgLTEwMiAwIC0yIDUyNiAtMiA1MjYgMzg3IDAgYzM3MCAwIDM5MCAtMSA0NDUgLTIxeiIvPjwvZz48L2c+PC9zdmc+" alt="Rayon Design"></div><span class="skill-logo-name">Rayon Design</span></div>
+      <div class="skill-logo-item"><div class="skill-logo-img" style="width:72px;height:72px"><img data-ph="5" src="" alt="Canva"></div><span class="skill-logo-name">Canva</span></div>
+      <div class="skill-logo-item"><div class="skill-logo-img"><img data-ph="6" src="" alt="MS Office"></div><span class="skill-logo-name">MS Office</span></div>
+      </div>
+
+      <div class="csl" style="margin-top:32px">Professional Skills</div>
+      <div class="sw">
+        <span class="sk">Technical Drawing</span><span class="sk">Team Collaboration</span>
+        <span class="sk">Research &amp; Analysis</span><span class="sk">Effective Communication</span>
+        <span class="sk">Organized</span><span class="sk">Attention to Detail</span>
+        <span class="sk">Project Coordination</span>
+      </div>
+
+      <div class="csl" style="margin-top:32px">Courses</div>
+      <div class="cv-item">
+        <div class="cv-name" style="font-size:.95rem">Digital Content Creation — AI Tools</div>
+        <div class="cv-sub">Crown Prince Foundation Workshop</div>
+        <div class="cv-date">2024</div>
+      </div>
+      <div class="cv-item">
+        <div class="cv-name" style="font-size:.95rem">Google Ads &amp; Meta Ads Workshops</div>
+        <div class="cv-sub">Crown Prince Foundation</div>
+        <div class="cv-date">2024</div>
+      </div>
+      <div class="cv-item">
+        <div class="cv-name" style="font-size:.95rem">AutoCAD Architecture</div>
+        <div class="cv-sub">Archizone Academy</div>
+        <div class="cv-date">2023</div>
+      </div>
+      <div class="cv-item">
+        <div class="cv-name" style="font-size:.95rem">Art of Debate Workshop</div>
+        <div class="cv-sub">Zarqa University</div>
+        <div class="cv-date">2023</div>
+      </div>
+
+      <div class="csl" style="margin-top:32px">Languages</div>
+      <div>
+        <div class="lang-row"><span class="lang-n">Arabic</span><span class="lang-l">Mother Tongue</span></div>
+        <div class="lang-row"><span class="lang-n">English</span><span class="lang-l">Good</span></div>
+      </div>
+
+      <div class="csl" style="margin-top:32px">Contact</div>
+      <div class="cv-item">
+        <a href="mailto:raghadabusaif12@gmail.com" class="cv-sub" style="display:block;text-decoration:none;transition:color .3s" onmouseover="this.style.color='var(--off)'" onmouseout="this.style.color=''">raghadabusaif12@gmail.com ↗</a>
+        <a href="https://www.linkedin.com/in/raghad-abusaif-9a28023a2" target="_blank" class="cv-sub" style="display:block;margin-top:6px;text-decoration:none;transition:color .3s" onmouseover="this.style.color='var(--off)'" onmouseout="this.style.color=''">LinkedIn — Raghad Abusaif ↗</a>
+        <div class="cv-sub" style="margin-top:6px">Zarqa, Jordan</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PORTFOLIO -->
+<div class="page" id="page-portfolio">
+  <div class="port-hero">
+    <h2 class="port-title">SELECTED<br><span class="r">WORK</span></h2>
+    <div class="port-meta">04 Projects</div>
+  </div>
+  <div class="proj-list">
+    <div class="pj" onclick="goProject('sparkup')"><div class="pj-num">01</div><div class="pj-name">SPARK.UP</div><div class="pj-cat">Graduation · Student Center</div><div class="pj-arrow">→</div></div>
+    <div class="pj" onclick="goProject('villa')"><div class="pj-num">02</div><div class="pj-name">VILLA</div><div class="pj-cat">Residential Design</div><div class="pj-arrow">→</div></div>
+    <div class="pj" onclick="goProject('visualization')"><div class="pj-num">03</div><div class="pj-name">VISUALIZATION</div><div class="pj-cat">Technical · Plan Rendering</div><div class="pj-arrow">→</div></div>
+    <div class="pj" onclick="goProject('graphic')"><div class="pj-num">04</div><div class="pj-name">GRAPHIC WORK</div><div class="pj-cat">Visual Communication</div><div class="pj-arrow">→</div></div>
+  </div>
+</div>
+
+<!-- PROJECT: SPARKUP -->
+<div class="page proj-page" id="page-proj-sparkup">
+  <div class="pp-header">
+    <div>
+      <button class="pp-back" onclick="goPage('portfolio')">← All Projects</button>
+      <div class="pp-cat">01 — Graduation Project · Zarqa, Jordan</div>
+      <h2 class="pp-title">SPARK<span class="r">.</span>UP</h2>
+      <div class="pp-mrow">
+        <div class="pp-mi"><div class="meta-l">Type</div><div class="meta-v">Student Center</div></div>
+        <div class="pp-mi"><div class="meta-l">Concept</div><div class="meta-v">Juxtaposition</div></div>
+        <div class="pp-mi"><div class="meta-l">Location</div><div class="meta-v">Zarqa, JO</div></div>
+      </div>
+    </div>
+    <div>
+      <p class="pp-desc eb-editable" style="font-size:1rem;font-weight:400;color:var(--off)" contenteditable="false">SPARK.UP — Student Center</p>
+      <p class="pp-desc eb-editable" style="margin-top:12px" contenteditable="false">A dedicated facility near a campus focuses on creating a supportive environment that enhances student life and learning.</p>
+    </div>
+  </div>
+  <div class="pp-body">
+    <div class="main-img eb-imgwrap"><img data-ph="7" src="" alt="SPARK.UP Student Center"></div>
+    <div style="padding:44px 0;border-bottom:1px solid var(--rule)">
+      <div class="psec">What is SPARK.UP?</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:16px;align-items:start">
+        <p class="pt eb-editable" style="line-height:1.9" contenteditable="false">The project aims to create a vibrant student hub that functions as a "third place," bridging home and university while supporting students' academic, social, and psychological needs. It addresses the lack of supportive campus spaces by integrating formal and informal study areas with dynamic social and activity zones.</p>
+        <p class="pt eb-editable" style="line-height:1.9" contenteditable="false">The design balances "mind" and "body" through a thoughtful spatial organization, connecting contrasting spaces via courtyards and open areas. Adopting a modern architectural language rooted in local identity, the project emphasizes sustainability through natural lighting and greenery, fostering well-being, a sense of belonging, and community engagement.</p>
+      </div>
+    </div>
+    <div class="pp-content">
+      <div class="pp-col">
+        <div class="psec">Concept</div>
+        <p class="pt eb-editable" contenteditable="false">The Student Center is inspired by student behavior, balancing "mind" and "body" through calm, organized study spaces and dynamic, informal areas for movement, interaction, and relaxation.</p>
+        <p class="pt eb-editable" contenteditable="false">This duality shapes the design through clear zoning, fluid circulation, and gradual transitions, creating a "third place" between home and university. With green spaces, flexible environments, and intuitive layouts, the center supports both focused study and spontaneous social interaction, adapting to students' evolving needs.</p>
+        <div class="tw" style="margin-top:14px"><span class="sk" style="border-color:rgba(163,21,21,0.4);color:rgba(163,21,21,0.9)">Mind</span><span class="sk">Calm</span><span class="sk">Focus</span><span class="sk">Order</span><span class="sk">Clarity</span><span class="sk" style="border-color:rgba(163,21,21,0.4);color:rgba(163,21,21,0.9)">Body</span><span class="sk">Dynamic</span><span class="sk">Movement</span><span class="sk">Interaction</span><span class="sk">Energy</span><span class="sk">Flow</span></div>
+        <div class="tw"><span class="sk">Student Center</span><span class="sk">Third Place</span><span class="sk">Zarqa</span><span class="sk">Tamayuz</span></div>
+      </div>
+      <div class="pp-col">
+        <div class="psec">Program</div>
+        <p class="pt eb-editable" contenteditable="false"></p><div style="color:rgba(240,237,231,0.58)"><span style="background-color: rgb(8, 8, 7); color: rgb(163, 21, 21); font-family: &quot;DM Mono&quot;, monospace; font-size: 9.28px; letter-spacing: 1.856px; text-transform: uppercase;">Outdoor seating's:</span></div><div style="color:rgba(240,237,231,0.58)">This outdoor seating's area offers a relaxed , informal spaces for rest or study.</div><div style="color:rgba(240,237,231,0.58)">Wooden benches are arranged across a sunken green zone, providing a sense of calm and semi-privacy while maintaining visual connection with the surroundings.</div><div><br></div><div style="color:rgba(240,237,231,0.58)"><span style="color: rgb(163, 21, 21); font-family: &quot;DM Mono&quot;, monospace; font-size: 9.28px; letter-spacing: 1.856px; text-transform: uppercase; background-color: rgb(8, 8, 7);">Informal studying places:</span></div><div style="color:rgba(240,237,231,0.58)">Informal study spaces offer flexible, relaxed environments that encourage collaboration, creativity and Spontaneous learning.</div><div><br></div><div style="color:rgba(240,237,231,0.58)"><span style="color: rgb(163, 21, 21); font-family: &quot;DM Mono&quot;, monospace; font-size: 9.28px; letter-spacing: 1.856px; text-transform: uppercase; background-color: rgb(8, 8, 7);">Transition between:</span></div><div style="color:rgba(240,237,231,0.58)">Connects the project's zones through outdoor paths that serve as both circulation routes and breakout spaces for informal gatherings and short breaks.</div><div><br></div><div style="color:rgba(240,237,231,0.58)"><span style="font-size: 0.88rem;">Spaces are organized into distinct, separated zones. The library and private study pods form one clearly defined area, while collaborative studios, cafés, exhibition spaces, and event halls are arranged in separate, independent zones. Green elements and courtyards act as connectors between these zones, softening the boundaries and providing moments of transition and pause.</span></div><p></p>
+        <div class="tw"><span class="sk">Courtyard</span><span class="sk">AutoCAD</span><span class="sk">Revit</span><span class="sk">SketchUp</span><span class="sk">Lumion</span></div>
+      </div>
+    </div>
+    <div class="h-gallery-wrap">
+    <div class="h-gallery" id="hg-sparkup">
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup',0)"><img data-ph="8" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup',1)"><img data-ph="9" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup',2)"><img data-ph="10" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup',3)"><img data-ph="11" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup',4)"><img data-ph="12" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup',5)"><img data-ph="13" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup',6)"><img data-ph="14" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup',7)"><img data-ph="15" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup',8)"><img data-ph="16" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup',9)"><img data-ph="17" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup',10)"><img data-ph="18" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup',11)"><img data-ph="19" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup',12)"><img data-ph="20" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup',13)"><img data-ph="21" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup',14)"><img data-ph="22" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup',15)"><img data-ph="23" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+  <div class="h-gallery-dots" id="dots-sparkup">
+    <div class="h-dot active"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div>
+  </div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div>
+  </div><div class="h-dot active"></div><div class="h-dot"></div>
+    <div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div>
+  </div>
+    <
+  
+  <div class="pp-section-label">DRAWINGS</div>
+  <div class="h-gallery-wrap">
+    <div class="h-gallery" id="hg-sparkup-drawings">
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup-drawings',0)"><img data-ph="24" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#ffffff"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup-drawings',1)"><img data-ph="25" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#ffffff"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup-drawings',2)"><img data-ph="26" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#ffffff"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup-drawings',3)"><img data-ph="27" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#ffffff"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup-drawings',4)"><img data-ph="28" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#ffffff"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup-drawings',5)"><img data-ph="29" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#ffffff"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup-drawings',6)"><img data-ph="30" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#ffffff"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup-drawings',7)"><img data-ph="31" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#ffffff"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup-drawings',8)"><img data-ph="32" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#ffffff"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('sparkup-drawings',9)"><img data-ph="33" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#ffffff"></div>
+    </div>
+  </div>
+  <div class="h-gallery-dots" id="dots-sparkup-drawings">
+    <div class="h-dot active"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div>
+  </div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div>
+  </div>
+  <div class="pnav"><button class="pnav-btn" onclick="goPage('portfolio')">← All Projects</button><button class="pnav-btn" onclick="goProject('villa')">Next: Villa →</button></div>
+  </div>
+</div>
+
+<!-- PROJECT: VILLA -->
+<div class="page proj-page active" id="page-proj-villa">
+  <div class="pp-header">
+    <div>
+      <button class="pp-back" onclick="goPage('portfolio')">← All Projects</button>
+      <div class="pp-cat">02 — Residential Design</div>
+      <h2 class="pp-title"><span class="r">V</span>ILLA</h2>
+      <div class="pp-mrow">
+        <div class="pp-mi"><div class="meta-l">Type</div><div class="meta-v">Residential</div></div>
+        <div class="pp-mi"><div class="meta-l">Location</div><div class="meta-v">Amman, JO</div></div>
+        <div class="pp-mi"><div class="meta-l">Year</div><div class="meta-v">2022</div></div>
+      </div>
+    </div>
+    <div>
+      <p class="pp-desc eb-editable" contenteditable="false"><font color="#a31515" face="DM Mono, monospace" size="1"><span style="letter-spacing: 1.856px; text-transform: uppercase; background-color: rgb(8, 8, 7);">VILLA DESIGN - CONCEPT STATEMENT</span></font><strong><br>Venturi-Inspired Architectural Language</strong><br>The villa is designed following a Venturi-inspired architectural approach, embracing complexity, contradiction, and expressive form. The concept is reflected through the use of an oversized façade, which acts as a dominant visual element and a defining feature of the project.</p>
+    </div>
+  </div>
+  <div class="pp-body">
+    <div class="main-img eb-imgwrap"><span class="il">Add main project image</span></div>
+    <div class="pp-content">
+      <div class="pp-col"><div class="psec">Formal Composition & Architectural Elements</div><p class="pt eb-editable" contenteditable="false">The design incorporates a mix of architectural elements, including varied window styles, multiple entrances, and a clearly articulated main entrance, creating a dynamic and layered composition. Wood elements are introduced to add warmth, while cement-based finishes with slightly playful, cartoon-like tones emphasize the expressive character of the design.</p><div class="tw"><span class="sk">Residential</span><span class="sk">Villa</span></div></div>
+      <div class="pp-col"><div class="psec">Contextual Integration in Amman</div><p class="pt eb-editable" contenteditable="false">Despite the strong influence of Venturi’s architectural language, the project carefully maintains the local identity of Amman. The scale, materials, and overall composition are adapted to harmonize with the surrounding context, ensuring that the villa remains both distinctive and contextually integrated.</p><div class="tw"><span class="sk">AutoCAD</span><span class="sk">Revit</span><span class="sk">Photoshop</span></div></div>
+    </div>
+    <div class="h-gallery-wrap">
+    <div class="h-gallery" id="hg-villa">
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('villa',0)"><img data-ph="34" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('villa',1)"><img data-ph="35" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('villa',2)"><img data-ph="36" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('villa',3)"><img data-ph="37" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('villa',4)"><img data-ph="38" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('villa',5)"><img data-ph="39" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('villa',6)"><img data-ph="40" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('villa',7)"><img data-ph="41" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('villa',8)"><img data-ph="42" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('villa',9)"><img data-ph="43" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+       <div class="h-gallery-item eb-imgwrap" onclick="openLight('villa',10)"><img data-ph="44" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1a1917"></div>
+</div>
+  </div>
+  <div class="h-gallery-dots" id="dots-villa">
+    <div class="h-dot active"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div>
+  </div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div><div class="h-dot"></div>
+  </div><div class="h-dot"></div><div class="h-dot"></div>
+  </div>
+    <div class="pnav"><button class="pnav-btn" onclick="goProject('sparkup')">← SPARK.UP</button><button class="pnav-btn" onclick="goProject('visualization')">Next: Visualization →</button></div>
+  </div>
+</div>
+
+<!-- PROJECT: VISUALIZATION -->
+<div class="page proj-page" id="page-proj-visualization">
+  <div class="pp-header">
+    <div>
+      <button class="pp-back" onclick="goPage('portfolio')">← All Projects</button>
+      <div class="pp-cat">03 — Professional Work · Technical Visualization</div>
+      <h2 class="pp-title">VISUAL<span class="r">-</span><br>IZATION</h2>
+      <div class="pp-mrow">
+        <div class="pp-mi"><div class="meta-l">Type</div><div class="meta-v">Plan Rendering</div></div>
+        <div class="pp-mi"><div class="meta-l">Tools</div><div class="meta-v">PS · CAD</div></div>
+        <div class="pp-mi"><div class="meta-l">Context</div><div class="meta-v">Professional</div></div>
+      </div>
+    </div>
+    <div>
+      <p class="pp-desc eb-editable" contenteditable="false">Professional architectural visualization sheets produced during industry experience. Each sheet integrates a fully rendered floor plan with spatial data — room areas, key plan orientation, and graphic hierarchy for clear client and contractor communication.</p>
+    </div>
+  </div>
+  <div class="pp-body">
+    <div class="main-img eb-imgwrap"><span class="il">Add main visualization sheet</span></div>
+    <div class="pp-content">
+      <div class="pp-col">
+        <div class="psec">About This Work</div>
+        <p class="pt eb-editable" contenteditable="false">Each sheet begins as a technical AutoCAD export, then is composed and rendered in Photoshop — applying material fills, shadow depth, color-coded zone overlays, area annotations, and a key plan for spatial orientation.</p>
+        <p class="pt eb-editable" contenteditable="false">The result is a presentation-ready document that is both technically precise and visually refined — bridging construction documentation and client communication.</p>
+      </div>
+      <div class="pp-col">
+        <div class="psec">What's in Each Sheet</div>
+        <p class="pt eb-editable" contenteditable="false">— Rendered floor plan with material texture fills<br>— Room area schedule with labels<br>— Key plan for orientation within the building<br>— Graphic hierarchy: walls, openings, furniture, annotation<br>— Consistent layout and typography system</p>
+        <div class="tw"><span class="sk">Plan Rendering</span><span class="sk">Photoshop</span><span class="sk">AutoCAD</span><span class="sk">Key Plan</span><span class="sk">Area Schedule</span></div>
+      </div>
+    </div>
+        <div style="position:relative">
+      <div class="h-gallery" id="hg-viz">
+        <div class="h-gallery-item eb-imgwrap" onclick="openLight('viz',0)"><img data-ph="45" src="" alt="Visualization sheet 1"></div>
+        <div class="h-gallery-item eb-imgwrap" onclick="openLight('viz',1)"><img data-ph="46" src="" alt="Visualization sheet 2"></div>
+        <div class="h-gallery-item eb-imgwrap" onclick="openLight('viz',2)"><img data-ph="47" src="" alt="Visualization sheet 3"></div>
+        <div class="h-gallery-item eb-imgwrap" onclick="openLight('viz',3)"><img data-ph="48" src="" alt="Visualization sheet 4"></div>
+        <div class="h-gallery-item eb-imgwrap" onclick="openLight('viz',4)"><img data-ph="49" src="" alt="Visualization sheet 5"></div>
+        <div class="h-gallery-item eb-imgwrap" onclick="openLight('viz',5)"><img data-ph="50" src="" alt="Visualization sheet 6"></div>
+        <div class="h-gallery-item eb-imgwrap" onclick="openLight('viz',6)"><img data-ph="51" src="" alt="Visualization sheet 7"></div>
+        <div class="h-gallery-item eb-imgwrap" onclick="openLight('viz',7)"><img data-ph="52" src="" alt="Visualization sheet 8"></div>
+        <div class="h-gallery-item eb-imgwrap" onclick="openLight('viz',8)"><img data-ph="53" src="" alt="Visualization sheet 9"></div>
+        <div class="h-gallery-item eb-imgwrap" onclick="openLight('viz',9)"><img data-ph="54" src="" alt="Visualization sheet 10"></div>
+        <div class="h-gallery-item eb-imgwrap" onclick="openLight('viz',10)"><img data-ph="55" src="" alt="Visualization sheet 11"></div>
+        <div class="h-gallery-item eb-imgwrap" onclick="openLight('viz',11)"><img data-ph="56" src="" alt="Visualization sheet 12"></div>
+        <div class="h-gallery-item eb-imgwrap" onclick="openLight('viz',12)"><img data-ph="57" src="" alt="Visualization sheet 13"></div>
+        <div class="h-gallery-item eb-imgwrap" onclick="openLight('viz',13)"><img data-ph="58" src="" alt="Visualization sheet 14"></div>
+        <div class="h-gallery-item eb-imgwrap" onclick="openLight('viz',14)"><img data-ph="59" src="" alt="Visualization sheet 15"></div>
+        <div class="h-gallery-item eb-imgwrap" onclick="openLight('viz',15)"><img data-ph="60" src="" alt="Visualization sheet 16"></div>
+        <div class="h-gallery-item eb-imgwrap" onclick="openLight('viz',16)"><img data-ph="61" src="" alt="Visualization sheet 17"></div>
+      </div>
+      
+      
+    </div>
+    <div class="pnav"><button class="pnav-btn" onclick="goProject('villa')">← Villa</button><button class="pnav-btn" onclick="goProject('graphic')">Next: Graphic Work →</button></div>
+  </div>
+</div>
+
+<!-- PROJECT: GRAPHIC -->
+<div class="page proj-page" id="page-proj-graphic">
+  <div class="pp-header">
+    <div>
+      <button class="pp-back" onclick="goPage('portfolio')">← All Projects</button>
+      <div class="pp-cat">04 — Visual Communication · Agency Work</div>
+      <h2 class="pp-title">GRAPHIC<br><span class="r">WORK</span></h2>
+      <div class="pp-mrow">
+        <div class="pp-mi"><div class="meta-l">Type</div><div class="meta-v">Social Media</div></div>
+        <div class="pp-mi"><div class="meta-l">Tools</div><div class="meta-v">PS · AI</div></div>
+        <div class="pp-mi"><div class="meta-l">Context</div><div class="meta-v">Agency</div></div>
+      </div>
+    </div>
+    <div>
+      <p class="pp-desc eb-editable" contenteditable="false">A selection of social media content designed for clients during a period working with a media agency. Projects spanned brand content, promotional posts, and campaign visuals — each tailored to the client's visual identity and platform requirements.</p>
+    </div>
+  </div>
+  <div class="pp-body">
+    <div class="main-img eb-imgwrap"><span class="il">Add featured graphic</span></div>
+    <div class="pp-content">
+      <div class="pp-col">
+        <div class="psec">Scope</div>
+        <p class="pt eb-editable" contenteditable="false">Content design for multiple clients across industries — promotional campaigns, product launches, and recurring brand content. Each project required adapting to an existing visual identity while bringing creative direction to the layout and composition.</p>
+      </div>
+      <div class="pp-col">
+        <div class="psec">Approach</div>
+        <p class="pt eb-editable" contenteditable="false">Each post balances brand consistency with visual clarity — clear hierarchy, intentional typography, and imagery that communicates the message at a glance. Formats adapted across Instagram, Facebook, and other platforms.</p>
+        <div class="tw"><span class="sk">Social Media</span><span class="sk">Brand Design</span><span class="sk">Photoshop</span><span class="sk">Illustrator</span><span class="sk">Content Design</span></div>
+      </div>
+    </div>
+    <div class="h-gallery-hint"></div>
+    <div class="h-gallery" id="hg-villa">
+        <div class="h-gallery-item eb-imgwrap"><span class="il">Add post 1</span></div>
+        <div class="h-gallery-item eb-imgwrap"><span class="il">Add post 2</span></div>
+        <div class="h-gallery-item eb-imgwrap"><span class="il">Add post 3</span></div>
+        <div class="h-gallery-item eb-imgwrap"><span class="il">Add post 4</span></div>
+        <div class="h-gallery-item eb-imgwrap"><span class="il">Add post 5</span></div>
+        <div class="h-gallery-item eb-imgwrap"><span class="il">Add post 6</span></div>
+    </div>
+    <div class="pnav"><button class="pnav-btn" onclick="goProject('visualization')">← Visualization</button><button class="pnav-btn" onclick="goPage('portfolio')">All Projects →</button></div>
+  </div>
+</div>
+
+<script>
+const cur=document.getElementById('cur'),curR=document.getElementById('curR');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function loop(){cur.style.left=mx+'px';cur.style.top=my+'px';rx+=(mx-rx)*.13;ry+=(my-ry)*.13;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(loop)})();
+
+// Scroll to top button
+const sttBtn=document.getElementById('stt');
+window.addEventListener('scroll',()=>sttBtn.classList.toggle('show',window.scrollY>300));
+
+function goPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  const pg=document.getElementById('page-'+id);
+  if(pg){pg.classList.add('active');window.scrollTo({top:0,behavior:'instant'});}
+  const n=document.getElementById('nav-'+id);
+  if(n)n.classList.add('active');
+}
+function goProject(slug){
+  var tMap = {'sparkup':'imgs/imgs-sparkup.js','villa':'imgs/imgs-villa.js','visualization':'imgs/imgs-other.js','graphic':'imgs/imgs-other.js'};
+  if (tMap[slug]) loadImages(tMap[slug]);
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  const pg=document.getElementById('page-proj-'+slug);
+  if(pg){pg.classList.add('active');window.scrollTo({top:0,behavior:'instant'});}
+  document.getElementById('nav-portfolio').classList.add('active');
+}
+
+// Horizontal gallery
+function scrollGal(id, dir) {
+  const el = document.getElementById(id);
+  if(!el) return;
+  const w = el.querySelector('.h-gallery-item').offsetWidth;
+  el.scrollBy({left: dir * w, behavior:'smooth'});
+}
+
+// Init all galleries with drag + dots update
+document.querySelectorAll('.h-gallery').forEach(function(gal) {
+  let isDown=false, hasDragged=false, startX, scrollLeft;
+  gal.addEventListener('mousedown', function(e){
+    isDown=true; hasDragged=false; gal.classList.add('dragging');
+    startX=e.pageX-gal.offsetLeft; scrollLeft=gal.scrollLeft;
+  });
+  gal.addEventListener('mouseleave',function(){isDown=false;gal.classList.remove('dragging')});
+  gal.addEventListener('mouseup',function(){isDown=false;gal.classList.remove('dragging')});
+  gal.addEventListener('mousemove',function(e){
+    if(!isDown)return;
+    const x=e.pageX-gal.offsetLeft;
+    if(Math.abs(x-startX)>5){hasDragged=true;e.preventDefault();}
+    gal.scrollLeft=scrollLeft-(x-startX)*1.2;
+  });
+  gal.addEventListener('click',function(e){
+    if(hasDragged){e.stopPropagation();e.preventDefault();hasDragged=false;return;}
+  },true);
+  // Touch
+  let tx=0;
+  gal.addEventListener('touchstart',function(e){tx=e.touches[0].clientX},{ passive:true});
+  gal.addEventListener('touchend',function(e){
+    const diff=tx-e.changedTouches[0].clientX;
+    if(Math.abs(diff)>40) scrollGal(gal.id, diff>0?1:-1);
+  },{ passive:true});
+  // Dots
+  gal.addEventListener('scroll', function(){
+    const dotsId='dots-'+gal.id.replace('hg-','');
+    const dotsEl=document.getElementById(dotsId);
+    if(!dotsEl) return;
+    const itemW=gal.querySelector('.h-gallery-item').offsetWidth;
+    const idx=Math.round(gal.scrollLeft/itemW);
+    dotsEl.querySelectorAll('.h-dot').forEach(function(d,i){
+      d.classList.toggle('active',i===idx);
+    });
+  });
+});
+
+
+// Horizontal gallery drag scroll
+document.querySelectorAll('.h-gallery').forEach(gallery => {
+  let isDown = false, startX, scrollLeft;
+  gallery.addEventListener('mousedown', e => {
+    isDown = true;
+    gallery.classList.add('grabbing');
+    startX = e.pageX - gallery.offsetLeft;
+    scrollLeft = gallery.scrollLeft;
+  });
+  gallery.addEventListener('mouseleave', () => { isDown = false; gallery.classList.remove('grabbing'); });
+  gallery.addEventListener('mouseup', () => { isDown = false; gallery.classList.remove('grabbing'); });
+  gallery.addEventListener('mousemove', e => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - gallery.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    gallery.scrollLeft = scrollLeft - walk;
+  });
+});
+
+
+// Lightbox
+const lbSrcs = {viz: [], villa: [], sparkup: [], graphic: []};
+function openLight(gal, idx) {
+  const items = document.querySelectorAll('#hg-'+gal+' img');
+  lbSrcs[gal] = Array.from(items).map(i=>i.src);
+  lbSrcs._cur = idx; lbSrcs._gal = gal;
+  document.getElementById('lb-img').src = lbSrcs[gal][idx];
+  document.getElementById('lb-count').textContent = (idx+1) + ' / ' + lbSrcs[gal].length;
+  const lb = document.getElementById('lightbox');
+  lb.style.display='flex';
+  document.addEventListener('keydown', lbKey);
+}
+function closeLB(){
+  document.getElementById('lightbox').style.display='none';
+  document.removeEventListener('keydown', lbKey);
+}
+function prevLB(){
+  lbSrcs._cur = (lbSrcs._cur - 1 + lbSrcs[lbSrcs._gal].length) % lbSrcs[lbSrcs._gal].length;
+  document.getElementById('lb-img').src = lbSrcs[lbSrcs._gal][lbSrcs._cur];
+  document.getElementById('lb-count').textContent = (lbSrcs._cur+1) + ' / ' + lbSrcs[lbSrcs._gal].length;
+}
+function nextLB(){
+  lbSrcs._cur = (lbSrcs._cur + 1) % lbSrcs[lbSrcs._gal].length;
+  document.getElementById('lb-img').src = lbSrcs[lbSrcs._gal][lbSrcs._cur];
+  document.getElementById('lb-count').textContent = (lbSrcs._cur+1) + ' / ' + lbSrcs[lbSrcs._gal].length;
+}
+function lbKey(e){if(e.key==='Escape')closeLB();if(e.key==='ArrowRight')nextLB();if(e.key==='ArrowLeft')prevLB();}
+document.getElementById('lightbox').addEventListener('click', function(e){if(e.target===this)closeLB();});
+
+
+
+
+
+// Image click
+document.addEventListener('click', function(e){
+  if(!ebOn) return;
+  const imgEl = e.target.closest('.img-click');
+  if(imgEl && !e.target.closest('[contenteditable]')){
+    e.preventDefault();
+    e.stopPropagation();
+    ebTarget = imgEl;
+    document.getElementById('ebImgFile').click();
+  }
+}, true);
+
+document.getElementById('ebImgFile').addEventListener('change', function(){
+  const file = this.files[0];
+  if(!file || !ebTarget) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    let img = ebTarget.querySelector('img');
+    if(!img){
+      img = document.createElement('img');
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;filter:brightness(.88)';
+      ebTarget.innerHTML = '';
+      ebTarget.appendChild(img);
+    }
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+  this.value = '';
+});
+
+// Save
+function ebSaveFile(){
+  document.querySelectorAll('[contenteditable]').forEach(el => el.contentEditable = 'false');
+  document.body.classList.remove('em');
+  document.querySelectorAll('.img-click').forEach(el => el.classList.remove('img-click'));
+  
+  const blob = new Blob(['<!DOCTYPE html>\n' + document.documentElement.outerHTML], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'index.html';
+  a.click();
+  
+  // Restore
+  setTimeout(()=>{
+    document.body.classList.add('em');
+    document.querySelectorAll('p,h1,h2,h3,h4,span.sk,.cv-name,.cv-sub,.cv-date,.cv-note,.ab-intro,.lang-n,.lang-l').forEach(el => el.contentEditable = 'true');
+    document.querySelectorAll('.main-img,.h-gallery-item,.home-ph,.home-right').forEach(el => el.classList.add('img-click'));
+  }, 100);
+}
+
+
+window.ebOn = false;
+var ebTarget = null;
+
+function ebToggle(){
+  window.ebOn = !window.ebOn;
+  document.body.classList.toggle('eb-on', window.ebOn);
+  var btn = document.getElementById('eb');
+  btn.textContent = window.ebOn ? '✓ Done' : '✏ Edit';
+  btn.style.borderColor = window.ebOn ? 'var(--red)' : 'rgba(240,237,231,0.2)';
+  btn.style.color = window.ebOn ? 'var(--off)' : 'var(--dimmer)';
+  btn.style.background = window.ebOn ? 'rgba(163,21,21,0.15)' : 'transparent';
+  document.querySelectorAll('.eb-editable').forEach(function(el){
+    el.contentEditable = window.ebOn ? 'true' : 'false';
+  });
+}
+
+document.addEventListener('click', function(e){
+  if(!window.ebOn) return;
+  var wrap = e.target.closest('.eb-imgwrap');
+  if(wrap && !e.target.closest('.eb-editable') && !e.target.isContentEditable){
+    ebTarget = wrap;
+    document.getElementById('ebFile').value = '';
+    document.getElementById('ebFile').click();
+  }
+}, true);
+
+document.getElementById('ebFile').addEventListener('change', function(){
+  var file = this.files[0];
+  if(!file || !ebTarget) return;
+  var r = new FileReader();
+  r.onload = function(e){
+    var img = ebTarget.querySelector('img');
+    if(!img){
+      img = document.createElement('img');
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block';
+      ebTarget.innerHTML = '';
+      ebTarget.appendChild(img);
+    }
+    img.src = e.target.result;
+  };
+  r.readAsDataURL(file);
+});
+
+function ebSave(){
+  document.querySelectorAll('.eb-editable').forEach(function(el){ el.contentEditable='false'; });
+  document.body.classList.remove('eb-on');
+  var out = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  document.body.classList.add('eb-on');
+  document.querySelectorAll('.eb-editable').forEach(function(el){ el.contentEditable='true'; });
+  var blob = new Blob([out],{type:'text/html'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'index.html';
+  a.click();
+}
+
+
+document.querySelectorAll('.h-gallery-wrap').forEach(function(wrap){
+  var gal=wrap.querySelector('.h-gallery');
+  if(!gal)return;
+  var id=gal.id;
+  var nav=document.createElement('div');
+  nav.className='h-gallery-nav';
+  nav.innerHTML='<div class="h-gallery-btn" onclick="scrollGal(''+id+'',-1)">←</div><div class="h-gallery-btn" onclick="scrollGal(''+id+'',1)">→</div>';
+  wrap.appendChild(nav);
+});
+</script>
+<footer style="
+  padding:22px 48px;
+  border-top:1px solid rgba(240,237,231,0.07);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:var(--black);
+">
+  <span style="font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;color:rgba(240,237,231,0.22);text-transform:uppercase">© 2026 Raghad Abusaif</span>
+  <span style="font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;color:rgba(240,237,231,0.22);text-transform:uppercase">All Rights Reserved</span>
+</footer>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:9000;align-items:center;justify-content:center;flex-direction:column">
+  <button onclick="closeLB()" style="position:absolute;top:24px;right:32px;background:none;border:none;color:rgba(240,237,231,0.5);font-size:1.8rem;cursor:none;font-family:var(--mono);transition:color .2s" onmouseover="this.style.color='var(--off)'" onmouseout="this.style.color='rgba(240,237,231,0.5)'">✕</button>
+  <button onclick="prevLB()" style="position:absolute;left:32px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:var(--off);width:44px;height:44px;font-size:1.1rem;cursor:none;transition:all .25s" onmouseover="this.style.background='rgba(163,21,21,0.5)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'">←</button>
+  <button onclick="nextLB()" style="position:absolute;right:32px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:var(--off);width:44px;height:44px;font-size:1.1rem;cursor:none;transition:all .25s" onmouseover="this.style.background='rgba(163,21,21,0.5)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'">→</button>
+  <img id="lb-img" style="max-width:90vw;max-height:88vh;object-fit:contain">
+  <div id="lb-count" style="margin-top:14px;font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;color:rgba(240,237,231,0.35)"></div>
+</div>
+
+
+
+
+
+
+<div class="eb-bar">
+  <div class="eb-hint">Click any text to edit &nbsp;·&nbsp; Click any image to replace</div>
+  <button class="eb-dl" onclick="ebSave()">⬇ Download Updated File</button>
+</div>
+<input type="file" id="ebFile" accept="image/*" style="display:none">
+
+
+
+
+
+
+<script>
+// Load images asynchronously after page is interactive
+function loadImages() {
+  try {
+    var t = document.getElementById('img-store');
+    var imgs = JSON.parse(t.innerHTML.trim());
+    document.querySelectorAll('img[data-ph]').forEach(function(img) {
+      var ph = img.getAttribute('data-ph');
+      if (imgs[ph]) { img.src = imgs[ph]; img.removeAttribute('data-ph'); }
+    });
+  } catch(e) { console.log('img load error', e); }
+}
+if (document.readyState === 'complete') { loadImages(); }
+else { window.addEventListener('load', loadImages); }
+</script>
+
+<script>
+var _loaded={}, _imgData={};
+function loadImages(src, cb) {
+  if (_loaded[src]) { if(cb) cb(); return; }
+  _loaded[src] = true;
+  var s = document.createElement('script');
+  s.src = src;
+  s.onload = function() {
+    // Apply loaded images
+    document.querySelectorAll('img[data-ph]').forEach(function(img) {
+      var ph = img.getAttribute('data-ph');
+      if (window._imgData && window._imgData[ph] !== undefined) {
+        img.src = window._imgData[ph];
+        img.removeAttribute('data-ph');
+      }
+    });
+    if (cb) cb();
+  };
+  document.head.appendChild(s);
+}
+// Load sparkup images on start
+window.addEventListener('load', function() {
+  loadImages('imgs/imgs-sparkup.js');
+});
+</script>
+</body></html>
